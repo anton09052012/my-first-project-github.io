@@ -169,8 +169,139 @@
     </div>
     <div class="chart-block">
       <h3>ETH/USDT</h3>
-      <canvas
-          #adebad' } },
+      <canvas id="chartETH"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>BNB/USDT</h3>
+      <canvas id="chartBNB"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>SOL/USDT</h3>
+      <canvas id="chartSOL"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>DOGE/USDT</h3>
+      <canvas id="chartDOGE"></canvas>
+    </div>
+    <div class="chart-block">
+      <h3>XRP/USDT</h3>
+      <canvas id="chartXRP"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let usdBalance = 10000;
+  let btcBalance = 0;
+  let currentPrice = 0;
+
+  const usdBalanceEl = document.getElementById('usdBalance');
+  const btcBalanceEl = document.getElementById('btcBalance');
+  const priceEl = document.getElementById('price');
+  const messageEl = document.getElementById('message');
+
+  function showMessage(text, isError = false) {
+    messageEl.textContent = text;
+    if (isError) {
+      messageEl.classList.remove('success');
+      messageEl.classList.add('error');
+    } else {
+      messageEl.classList.remove('error');
+      messageEl.classList.add('success');
+    }
+    setTimeout(() => {
+      messageEl.textContent = '';
+      messageEl.classList.remove('error', 'success');
+    }, 3500);
+  }
+
+  function updateBalances() {
+    usdBalanceEl.textContent = usdBalance.toFixed(2);
+    btcBalanceEl.textContent = btcBalance.toFixed(6);
+  }
+
+  async function fetchPrice() {
+    try {
+      const res = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+      const data = await res.json();
+      currentPrice = parseFloat(data.price);
+      priceEl.textContent = `Поточний курс BTC/USDT: $${currentPrice.toFixed(2)}`;
+    } catch {
+      priceEl.textContent = 'Не вдалося завантажити курс.';
+    }
+  }
+
+  document.getElementById('buyBtn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('buyAmount').value);
+    if (isNaN(amount) || amount <= 0) {
+      showMessage('Введіть коректну кількість BTC для покупки.', true);
+      return;
+    }
+    const cost = amount * currentPrice;
+    if (cost > usdBalance) {
+      showMessage('Недостатньо USD для покупки.', true);
+      return;
+    }
+    usdBalance -= cost;
+    btcBalance += amount;
+    updateBalances();
+    showMessage(`Куплено ${amount.toFixed(6)} BTC за $${cost.toFixed(2)}.`);
+  });
+
+  document.getElementById('sellBtn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('sellAmount').value);
+    if (isNaN(amount) || amount <= 0) {
+      showMessage('Введіть коректну кількість BTC для продажу.', true);
+      return;
+    }
+    if (amount > btcBalance) {
+      showMessage('Недостатньо BTC для продажу.', true);
+      return;
+    }
+    const revenue = amount * currentPrice;
+    btcBalance -= amount;
+    usdBalance += revenue;
+    updateBalances();
+    showMessage(`Продано ${amount.toFixed(6)} BTC за $${revenue.toFixed(2)}.`);
+  });
+
+  fetchPrice();
+  updateBalances();
+  setInterval(fetchPrice, 30000);
+
+  // Функція для отримання історичних даних і малювання графіка
+  async function loadChart(symbol, canvasId) {
+    try {
+      const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=1h&limit=24`);
+      const data = await res.json();
+      const labels = data.map(d => {
+        const date = new Date(d[0]);
+        return `${date.getHours()}:00`;
+      });
+      const prices = data.map(d => parseFloat(d[4]));
+
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: `${symbol} Закриття ціни`,
+            data: prices,
+            borderColor: '#00ff99',
+            backgroundColor: 'rgba(0,255,153,0.15)',
+            fill: true,
+            tension: 0.25,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#adebad' } },
             tooltip: { mode: 'index', intersect: false },
           },
           scales: {
