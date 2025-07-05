@@ -1,149 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сонячна система</title>
-    <style>
-        body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #000;
-            overflow: hidden;
-        }
-
-        .solar-system {
-            position: relative;
-            width: 600px;
-            height: 600px;
-        }
-
-        .sun {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-color: #f39c12;
-            border-radius: 50%;
-            box-shadow: 0 0 50px 20px #f39c12;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        .orbit {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: rotate linear infinite;
-        }
-
-        .planet {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .orbit:nth-child(2) {
-            width: 150px;
-            height: 150px;
-            animation-duration: 5s;
-        }
-
-        .orbit:nth-child(2) .planet {
-            background-color: #e74c3c; /* Меркурій */
-        }
-
-        .orbit:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            animation-duration: 8s;
-        }
-
-        .orbit:nth-child(3) .planet {
-            background-color: #f1c40f; /* Венера */
-        }
-
-        .orbit:nth-child(4) {
-            width: 300px;
-            height: 300px;
-            animation-duration: 12s;
-        }
-
-        .orbit:nth-child(4) .planet {
-            background-color: #3498db; /* Земля */
-        }
-
-        .orbit:nth-child(5) {
-            width: 400px;
-            height: 400px;
-            animation-duration: 16s;
-        }
-
-        .orbit:nth-child(5) .planet {
-            background-color: #e67e22; /* Марс */
-        }
-
-        .orbit:nth-child(6) {
-            width: 500px;
-            height: 500px;
-            animation-duration: 20s;
-        }
-
-        .orbit:nth-child(6) .planet {
-            background-color: #9b59b6; /* Юпітер */
-        }
-
-        .orbit:nth-child(7) {
-            width: 550px;
-            height: 550px;
-            animation-duration: 24s;
-        }
-
-        .orbit:nth-child(7) .planet {
-            background-color: #1abc9c; /* Сатурн */
-        }
-
-        @keyframes rotate {
-            from {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            to {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>crupto.com</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  * { box-sizing: border-box; }
+  body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: 'Montserrat', sans-serif;
+    color: #f0f4f8;
+    margin: 0; padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  .container {
+    background: rgba(25,42,65,0.85);
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+    max-width: 900px;
+    width: 100%;
+    overflow-y: auto;
+  }
+  h1 {
+    margin: 0 0 20px;
+    font-weight: 700;
+    text-align: center;
+    color: #00ff99;
+    text-shadow: 0 0 8px #00ff99;
+  }
+  #price {
+    font-weight: 600;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #adebad;
+  }
+  .balance, .trade {
+    background: #143850;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin-bottom: 25px;
+    box-shadow: inset 0 0 10px rgba(0,255,150,0.1);
+  }
+  .balance h2, .trade h2 {
+    margin-top: 0;
+    font-weight: 700;
+    color: #00ffbb;
+    text-shadow: 0 0 6px #00ffbb;
+  }
+  .balance p {
+    font-size: 1.1rem;
+    margin: 8px 0;
+  }
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #b0f0cc;
+  }
+  input[type=number] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    transition: box-shadow 0.3s ease;
+    background: #0a253a;
+    color: #d4f1e1;
+  }
+  input[type=number]:focus {
+    box-shadow: 0 0 10px #00ff99;
+  }
+  button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px 0;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #00ffa3, #00ff6c);
+    color: #022a00;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 255, 100, 0.6);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  button:hover {
+    background: linear-gradient(90deg, #00ff6c, #00ffa3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 255, 100, 0.8);
+  }
+  #message {
+    text-align: center;
+    font-weight: 600;
+    min-height: 1.4em;
+    font-size: 1rem;
+    margin-top: -10px;
+  }
+  #message.error {
+    color: #ff6666;
+    text-shadow: 0 0 5px #ff4d4d;
+  }
+  #message.success {
+    color: #80ffb3;
+    text-shadow: 0 0 8px #00ff77;
+  }
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+  .chart-block {
+    background: #0c2a48;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,255,150,0.2);
+  }
+  .chart-block h3 {
+    color: #00ff99;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    text-shadow: 0 0 6px #00ff99;
+  }
+</style>
 </head>
 <body>
-    <div class="solar-system">
-        <div class="sun"></div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
-        <div class="orbit">
-            <div class="planet"></div>
-        </div>
+
+<div class="container">
+  <h1>Моя Криптобіржа</h1>
+
+  <div id="price">Завантаження курсу BTC/USDT...</div>
+
+  <div class="balance">
+    <h2>Баланс</h2>
+    <p>Гроші (USD): <span id="usdBalance">10000</span></p>
+    <p>Bitcoin (BTC): <span id="btcBalance">0</span></p>
+  </div>
+
+  <div class="trade">
+    <h2>Купити BTC</h2>
+    <label for="buyAmount">Скільки BTC купити?</label>
+    <input type="number" id="buyAmount" min="0" step="0.0001" placeholder="Введіть кількість" />
+    <button id="buyBtn">Купити</button>
+  </div>
+
+  <div class="trade">
+    <h2>Продати BTC</h2>
+    <label for="sellAmount">Скільки BTC продати?</label>
+    <input type="number" id="sellAmount" min="0" step="0.0001" placeholder="Введіть кількість" />
+    <button id="sellBtn">Продати</button>
+  </div>
+
+  <div id="message"></div>
+
+  <div class="charts">
+    <div class="chart-block">
+      <h3>BTC/USDT</h3>
+      <canvas id="chartBTC"></canvas>
     </div>
+    <div class="chart-block">
+      <h3>ETH/USDT</h3>
+      <canvas
+          #adebad' } },
+            tooltip: { mode: 'index', intersect: false },
+          },
+          scales: {
+            x: { ticks: { color: '#a0dca0' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+            y: { ticks: { color: '#a0dca0' }, grid: { color: 'rgba(255,255,255,0.1)' }, beginAtZero: false }
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Помилка завантаження графіка для', symbol, error);
+    }
+  }
+
+  // Завантаження і малювання усіх графіків
+  let charts = {};
+  async function loadAllCharts() {
+    charts.btc = await loadChart('BTCUSDT', 'chartBTC');
+    charts.eth = await loadChart('ETHUSDT', 'chartETH');
+    charts.bnb = await loadChart('BNBUSDT', 'chartBNB');
+    charts.sol = await loadChart('SOLUSDT', 'chartSOL');
+    charts.doge = await loadChart('DOGEUSDT', 'chartDOGE');
+    charts.xrp = await loadChart('XRPUSDT', 'chartXRP');
+  }
+
+  loadAllCharts();
+
+  // Якщо хочеш оновлювати графіки — можна додати setInterval для loadAllCharts
+  // setInterval(loadAllCharts, 5 * 60 * 1000); // оновлення кожні 5 хвилин
+
+</script>
 </body>
 </html>
